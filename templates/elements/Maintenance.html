@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Last Updated: 2025-06-12 by lim bada -->
+<head>
+  <title>Cymechs | Health Monitoring System</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='assets/images/image.png') }}" type="image/x-icon">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-size: 1vw; /* 화면 크기에 따라 자동 조정 */
+    }
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 20px 50px;
+      box-sizing: border-box;
+    }
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .header-logo img {
+      max-width: 20vw;
+      height: auto;
+    }
+    .card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin: 10px 10px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+    }
+    .card-header h5 {
+      margin: 0;
+      font-size: 1.2em;
+    }
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .header-buttons .custom-btn {
+      padding: 0.4vw 1vw;
+      font-size: 0.9em;
+      white-space: nowrap;
+    }
+    .card-body {
+      flex: 1;
+      overflow: hidden; /* 표가 넘치지 않도록 */
+    }
+    table {
+      width: 100%;
+      font-size: 0.7em;
+      table-layout: fixed;
+    }
+    td, th {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .progress-bar-text {
+      position: absolute;
+      right: -5px;
+      top: 2px;
+      font-size: 0.7em;
+      color: black;
+      font-weight: bold;
+    }
+    .status-badge {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      font-size: 0.7em;
+    }
+    .status-green { background-color: #28a745; }
+    .status-yellow { background-color: #ffc107; color: #212529; }
+    .status-red { background-color: #dc3545; }
+    
+    .wrap-text {
+    white-space: normal !important;
+    word-break: break-word;
+  }
+
+    @media (max-width: 768px) {
+      html, body { font-size: 1.5vw; }
+      .header-buttons { width: 100%; justify-content: center; margin-top: 5px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-container" >
+  
+
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <div class="header-logo me-3">
+          <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='assets/images/home.png') }}" alt="logo" style="max-height: 40px;">
+          </a>
+        </div>
+        <h5 class="mb-0 text-center w-100" style="flex: 1;">QSR5 점검 및 유지보수 관리</h5>
+      </div>
+      <div class="header-buttons ms-auto">
+        <!-- SOP 미리보기 및 다운로드 버튼 -->
+        <a href="{{ url_for('static', filename='manuals/20240311_RobotTeachingSop.pdf') }}" target="_blank" class="btn btn-outline-info custom-btn ms-2">
+          📄 SOP 보기
+        </a>
+        <a href="{{ url_for('download_manual', filename='20240311_RobotTeachingSop.pdf') }}" class="btn btn-outline-success custom-btn ms-2">
+          ⬇️ 매뉴얼 다운로드
+        </a>
+        <!-- 점검 정보 수정 및 기록 남기기기 -->
+        <button class="btn btn-primary custom-btn">점검 정보 수정하기</button>
+        <button class="btn btn-outline-secondary custom-btn">점검 기록 남기기</button>        
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-hover text-center align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th>이상 상태</th>
+            <th>점검 부품</th>
+            <th>점검 사항</th>
+            <th>잔여 점검 주기</th>
+            <th>최근 점검 이력</th>
+            <th>점검 주기 / 수명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="status-badge status-green">정상</span></td>
+            <td>Encoder Back-Up Battery</td>
+            <td>교체 주기 엄수</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-success" role="progressbar" style="width:80%;"></div><span class="progress-bar-text">80%</span></div></td>
+            <td>2025-05-25 / 홍길동</td>
+            <td>2년 / 3년</td>
+          </tr>
+          <tr>
+            <td><span class="status-badge status-yellow">주의</span></td>
+            <td>Z축 Ball Screw</td>
+            <td>Grease 도포 상태 및 구동 상태</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-warning" role="progressbar" style="width:50%;"></div><span class="progress-bar-text">50%</span></div></td>
+            <td>2025-04-15 / 김철수</td>
+            <td>1년 / 4년</td>
+          </tr>
+          <tr>
+            <td><span class="status-badge status-red">경고</span></td>
+            <td>Z축 LM Guide</td>
+            <td>Grease 도포 상태 및 구동 상태</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-danger" role="progressbar" style="width:20%;"></div><span class="progress-bar-text">20%</span></div></td>
+            <td>2025-03-10 / 이영희</td>
+            <td>2년 / 4년</td>
+          </tr>
+          
+          <tr>
+            <td><span class="status-badge status-green">정상</span></td>
+            <td>Z축 Timing Belt</td>
+            <td>Belt Tension 및 구동 상태</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-success" role="progressbar" style="width:80%;"></div><span class="progress-bar-text">80%</span></div></td>
+            <td>2025-05-25 / 홍길동</td>
+            <td>6개월 / 3년</td>
+          </tr>
+          <tr>
+            <td><span class="status-badge status-yellow">주의</span></td>
+            <td>T1축 Harmonic Drive</td>
+            <td>Theta 구동 상태 및 진동 유무</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-warning" role="progressbar" style="width:50%;"></div><span class="progress-bar-text">50%</span></div></td>
+            <td>2025-04-15 / 김철수</td>
+            <td>1년 / 3년</td>
+          </tr>
+          <tr>
+            <td><span class="status-badge status-red">경고</span></td>
+            <td>T1축 Timing Belt</td>
+            <td>Belt Tension 및 구동 상태</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-danger" role="progressbar" style="width:20%;"></div><span class="progress-bar-text">20%</span></div></td>
+            <td>2025-03-10 / 이영희</td>
+            <td>6개월 / 2년</td>
+          </tr>
+
+          <tr>
+            <td><span class="status-badge status-green">정상</span></td>
+            <td>T2축 Harmonic Drive</td>
+            <td>Theta 구동 상태 및 진동 유무</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-success" role="progressbar" style="width:80%;"></div><span class="progress-bar-text">80%</span></div></td>
+            <td>2025-05-25 / 홍길동</td>
+            <td>1년 / 3년</td>
+          </tr>
+          <tr>
+            <td><span class="status-badge status-green">정상</span></td>
+            <td>T2축 Timing Belt</td>
+            <td>Belt Tension 및 구동 상태</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-success" role="progressbar" style="width:80%;"></div><span class="progress-bar-text">80%</span></div></td>
+            <td>2025-05-25 / 홍길동</td>
+            <td>6개월 / 2년</td>
+          </tr>
+          <tr>
+            <td><span class="status-badge status-yellow">주의</span></td>
+            <td>Arm A Motor Timing Belt</td>
+            <td>Belt Tension 및 구동 상태</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-warning" role="progressbar" style="width:50%;"></div><span class="progress-bar-text">50%</span></div></td>
+            <td>2025-04-15 / 김철수</td>
+            <td>6개월 / 2년</td>
+          </tr>
+          <tr>
+            <td><span class="status-badge status-red">경고</span></td>
+            <td>Arm B Motor Timing Belt</td>
+            <td>Belt Tension 및 구동 상태</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-danger" role="progressbar" style="width:20%;"></div><span class="progress-bar-text">20%</span></div></td>
+            <td>2025-03-10 / 이영희</td>
+            <td>6개월 / 3년</td>
+          </tr>
+
+          <tr>
+            <td><span class="status-badge status-green">정상</span></td>
+            <td>구동부 배선 (Z축 동작시 확인)</td>
+            <td class="wrap-text">배선의 과도한 움직임,  간섭 발생 여부 확인</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-success" role="progressbar" style="width:80%;"></div><span class="progress-bar-text">80%</span></div></td>
+            <td>2025-05-25 / 홍길동</td>
+            <td>6개월 / 2년</td>
+          </tr>
+
+          <tr>
+            <td><span class="status-badge status-red">경고</span></td>
+            <td>배선 전반 (각 축 동작시 확인)</td>
+            <td class="wrap-text">전체 구동부 배선의 간섭 유무 및 비정상적인 움직임 여부 점검</td>
+            <td><div class="progress position-relative" style="height:20px;"><div class="progress-bar bg-danger" role="progressbar" style="width:20%;"></div><span class="progress-bar-text">20%</span></div></td>
+            <td>2025-03-10 / 이영희</td>
+            <td>6개월 / 2년</td>
+          </tr>
+          <!-- 필요에 따라 행 추가 -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='assets/js/plugins/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+</body>
+</html>

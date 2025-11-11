@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Last Updated: 2025-06-12 by lim bada -->
+<head>
+  <title>Cymechs | Health Monitoring System</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Able Pro is trending dashboard template made using Bootstrap 5 design framework.">
+  <meta name="keywords" content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard">
+  <meta name="author" content="Phoenixcoded">
+
+  <link rel="icon" href="{{ url_for('static', filename='assets/images/image.png') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/inter/inter.css') }}" id="main-font-link">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/tabler-icons.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/feather.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/material.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}" id="main-style-link">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style-preset.css') }}">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .full-screen-container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 20px 50px;
+      box-sizing: border-box;
+    }
+    .header-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .header-logo img {
+      max-width: 160px;
+      max-height: 130px;
+    }
+    .header-status {
+      color: orange;
+      text-align: right;
+      min-width: 200px;
+    }
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+    .card-flex {
+      flex: 1 1 30%;
+      min-width: 250px;
+      margin: 10px;
+      height: calc(100% / 2 - 40px); /* 2줄 구성 시 카드 높이 자동 */
+    }
+    @media (max-width: 768px) {
+      .header-status { text-align: center; margin-top: 10px; }
+      .card-flex { flex: 1 1 100%; height: auto; }
+    }
+  </style>
+</head>
+<body data-pc-preset="preset-1" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme="light">
+
+<!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+
+<!-- [ Header Topbar ] start -->
+<!-- [ Main Content ] start -->
+<div class="main-container" style="padding: 20px 50px;">
+  <!-- 상단 영역: 로고(왼쪽), Last Updated + envData(오른쪽) -->
+  <div style="
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center; 
+    font-weight: bold; ">
+    
+    <!-- 왼쪽: 로고 -->
+    <div style="flex: 1 1 auto; min-width: 300px;">
+      <a href="{{ url_for('index') }}" class="b-brand text-primary">
+        <img src="{{ url_for('static', filename='assets/images/cymechs.svg') }}" class="img-fluid logo-lg" alt="logo" style="max-width: 160px; max-height: 130px;">
+      </a>
+    </div>
+
+    <!-- 오른쪽: Last Updated + 온도/습도 -->
+    <div style="flex: 1 1 auto; min-width: 200px; text-align: right;" class="header-status">
+      <div id="lastUpdated" style="color: orange;">Last Updated: -</div>
+      <div id="envData" style="color: #0d6efd;">온도: - ℃ | 습도: - %</div>
+    </div>
+
+  </div>
+
+  <!-- 카드 영역들 -->
+  <div class="row d-flex flex-wrap">
+    <div class="col-lg-4 d-flex flex-column">
+      <div class="card h-100">
+        <div class="card-header text-center" style="padding:15px;">
+          <h5 style="text-align:center;color:#0d6efd!important;" class="mb-0">Grip On Time (sec)</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered" style="width:100%;">
+            <tbody id="latestGripOnTime"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 d-flex flex-column">
+      <div class="card h-100">
+        <div class="card-header text-center" style="padding:15px;">
+          <h5 style="text-align:center;color:#0d6efd!important;" class="mb-0">Moving Time (sec) </h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered" style="width:100%;">
+            <tbody id="latestMovingTime"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 d-flex flex-column">
+      <div class="card h-100">
+        <div class="card-header text-center" style="padding:15px;">
+          <h5 style="text-align:center;color:#0d6efd!important;" class="mb-0">Max Inrange Time (sec)</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered" style="width:100%;">
+            <tbody id="latestMaxInrangeTime"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 d-flex flex-column">
+      <div class="card h-100">
+        <div class="card-header text-center" style="padding:15px;">
+          <h5 style="text-align:center;color:#0d6efd!important;" class="mb-0">Max Torque (%)</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered" style="width:100%;">
+            <tbody id="latestMaxTorque"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 d-flex flex-column">
+      <div class="card h-100">
+        <div class="card-header text-center" style="padding:15px;">
+          <h5 style="text-align:center;color:#0d6efd!important;" class="mb-0">Max Duty (%)</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered" style="width:100%;">
+            <tbody id="latestMaxDuty"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 d-flex flex-column">
+      <div class="card h-100">
+        <div class="card-header text-center" style="padding:15px;">
+          <h5 style="text-align:center;color:#0d6efd!important;" class="mb-0">Max Position Error (ecnt)</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered" style="width:100%;">
+            <tbody id="latestMaxPosition"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 반응형 처리 -->
+<style>
+  @media (max-width: 768px) {
+    .header-status {
+      text-align: center;
+      margin-top: 10px;
+    }
+  }
+</style>
+
+<!-- [ Main Content ] end -->
+
+<!-- 스크립트 영역 유지 -->
+<script src="{{ url_for('static', filename='assets/js/plugins/apexcharts.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/pages/dashboard-default.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/simplebar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/fonts/custom-font.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/feather.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/monitoring.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/chart.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/sensor_chart.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='assets/js/diagnosis_tab.js') }}"></script>
+<script>
+  let intervalId;
+  function fetchLatestGripData() {
+    const command = "PICK";
+    const stage = 1;
+    fetch('/api/latest-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ command, stage })
+    })
+    .then(response => response.json())
+    .then(data => {
+      const tbody = document.getElementById('latestData');
+      tbody.innerHTML = `
+        <tr><th>Logging Date</th><td>${data.loggingDateTime || '-'}</td></tr>
+        <tr><th>Grip On Time(sec)</th><td>${data.gripOnTime || '-'}</td></tr>
+        <tr><th>Grip Off Time</th><td>${data.gripOffTime || '-'}</td></tr>
+        <tr><th>Command</th><td>${data.command || '-'}</td></tr>
+        <tr><th>Stage</th><td>${data.stage || '-'}</td></tr>
+      `;
+    });
+  }
+  fetchLatestGripData();
+  intervalId = setInterval(fetchLatestGripData, 3000);
+</script>
+
+</body>
+</html>

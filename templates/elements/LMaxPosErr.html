@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Last Updated: 2025-06-16 by lim bada -->
+  <!-- [Head] start -->
+  <head>
+    <title>Cymechs | Health Data Monitoring</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Able Pro is trending dashboard template made using Bootstrap 5 design framework. Able Pro is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies.">
+    <meta name="keywords" content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard">
+    <meta name="author" content="Phoenixcoded">
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" href="{{ url_for('static', filename='assets/images/image.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/inter/inter.css') }}">
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/tabler-icons.min.css') }}">
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/feather.css') }}">
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/fontawesome.css') }}">
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/material.css') }}">
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style-preset.css') }}">
+
+<style>
+    /* 화면 높이에 맞춰 row 설정 (헤더 74px 제외) */
+    .full-screen-row {
+      height: calc(93vh - 74px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding : 0px !important;
+    }
+
+    .full-screen-row .col-sm-12 {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .full-screen-row .card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .full-screen-row .card-header {
+      flex: 0 0 auto;
+    }
+
+    .full-screen-row .card-body {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+    }
+
+    #sensorChart {
+      flex: 1;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    @media (max-width: 768px) {
+      .full-screen-row {
+        height: auto;
+        overflow: auto;
+      }
+      .full-screen-row .card-body {
+        flex: initial;
+        height: auto;
+      }
+    }
+  </style>
+
+</head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+<!-- [ Sidebar Menu ] start -->
+<nav class="pc-sidebar">
+  <div class="navbar-wrapper">
+    <div class="m-header">
+      <a href="{{ url_for('dashboard') }}" class="b-brand text-primary">
+        <!-- ========   Change your logo from here   ============ -->
+        <img src="{{ url_for('static', filename='assets/images/cymechs.svg') }}" alt="logo" class="img-fluid logo-lg">
+        <span class="badge bg-light-success rounded-pill ms-2 theme-version">v2.5.0</span>
+      </a>
+    </div>
+    <div class="navbar-content">
+      <div class="card pc-user-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <img src="{{ url_for('static', filename='assets/images/user/avatar-6.jpg') }}" alt="user-image" class="user-avtar wid-45 rounded-circle"/>
+            </div>
+            <div class="flex-grow-1 ms-3 me-2">
+              <h6 class="mb-0">Cymechs User</h6>
+              <small>R&D center</small>
+            </div>
+            <a class="btn btn-icon btn-link-secondary avtar" data-bs-toggle="collapse" href="#pc_sidebar_userlink">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-sort-outline"></use>
+              </svg>
+            </a>
+          </div>
+          <div class="collapse pc-user-links" id="pc_sidebar_userlink">
+            <div class="pt-3">
+              <a href="#!">
+                <i class="ti ti-user"></i>
+                <span>My Account</span>
+              </a>
+              <a href="#!">
+                <i class="ti ti-settings"></i>
+                <span>Settings</span>
+              </a>
+              <a href="#!">
+                <i class="ti ti-lock"></i>
+                <span>Lock Screen</span>
+              </a>
+              <a href="#!">
+                <i class="ti ti-power"></i>
+                <span>Logout</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- [ Sidebar Menu ] start  -->
+      <ul class="pc-navbar">
+        <li class="pc-item pc-caption">
+          <label>Navigation</label>
+        </li>
+        <!-- Dashboard 토글 -->
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-box-1"></use></svg></span>
+            <span class="pc-mtext">Dashboard</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item"><a href="{{ url_for('monitoring') }}" class="pc-link">Monitoring</a></li>
+            <li class="pc-item"><a href="{{ url_for('maintenance') }}" class="pc-link">Maintenance</a></li>
+          </ul>
+        </li>
+        <!-- Authentication 토글 -->
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-shield"></use></svg></span>
+            <span class="pc-mtext">Authentication</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item"><a href="{{ url_for('login') }}" class="pc-link" target="_blank">Login</a></li>
+            <li class="pc-item"><a href="{{ url_for('register') }}" class="pc-link" target="_blank">Register</a></li>
+          </ul>
+        </li>
+        <!-- Health Monitoring 토글 -->
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-box-1"></use></svg></span>
+            <span class="pc-mtext">Health Monitoring</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item"><a href="{{ url_for('maxTorque') }}" class="pc-link">Max Torque</a></li>
+            <li class="pc-item"><a href="{{ url_for('minTorque') }}" class="pc-link">Min Torque</a></li>
+            <li class="pc-item"><a href="{{ url_for('maxDuty') }}" class="pc-link">Max Duty</a></li>
+            <li class="pc-item"><a href="{{ url_for('maxPoserr') }}" class="pc-link">Max Position Error</a></li>
+            <li class="pc-item"><a href="{{ url_for('gripOntime') }}" class="pc-link">Grip On Time</a></li>
+            <li class="pc-item"><a href="{{ url_for('inrangeTime') }}" class="pc-link">Inrange Time</a></li>
+            <li class="pc-item"><a href="{{ url_for('movingTime') }}" class="pc-link">Moving Time</a></li>
+          </ul>
+        </li>
+        <!-- PDM 및 기타 -->
+        <!--
+        <li class="pc-item">
+          <a href="{{ url_for('Pdm') }}" class="pc-link">
+            <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-clipboard"></use></svg></span>
+            <span class="pc-mtext">PDM</span>
+          </a>
+        </li>
+        -->
+        <!-- Management 토글 (예시) -->
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-notification-status"></use></svg></span>
+            <span class="pc-mtext">Management</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item"><a href="{{ url_for('masterCode') }}" class="pc-link">Master Code</a></li>
+            <li class="pc-item"><a href="{{ url_for('masterCode') }}" class="pc-link">User Information</a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- [ Sidebar Menu ] end -->
+    </div>
+  </div>
+</nav>
+<!-- [ Header Topbar ] start -->
+<header class="pc-header">
+  <div class="header-wrapper"> <!-- [Mobile Media Block] start -->
+<div class="me-auto pc-mob-drp">
+  <ul class="list-unstyled">
+    <!-- ======= Menu collapse Icon ===== -->
+    <li class="pc-h-item pc-sidebar-collapse">
+      <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+        <i class="ti ti-menu-2"></i>
+      </a>
+    </li>
+    <li class="pc-h-item pc-sidebar-popup">
+      <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+        <i class="ti ti-menu-2"></i>
+      </a>
+    </li>
+  </header>
+  
+    <!-- [ Main Content ] start -->
+    <div class="pc-container">
+      <div class="pc-content">    
+        <!-- [ breadcrumb ] end -->
+
+        <!--[ Main Content ] start-->
+        <div class="row full-screen-row">
+          <!-- [ link-button ] start -->
+          <div class="col-sm-12 ">
+            <div class="card">
+              <!-- [ breadcrumb ] start -->
+
+              <div class="card-header py-3">
+                <!-- 필터 조건 영역 -->
+                <div class="row g-3">
+                  <div class="col-md-10 d-flex justify-content-center align-items-center"  style="margin : 25px 0px">
+                    <h3 class="mb-0 fw-bold text-primary">Max Position Error</h3>
+                  </div>
+                  <div class="col-md-2"  style="margin : 25px 0px">
+                    <a href="{{ url_for('maxPoserr') }}" class="btn btn-outline-primary">
+                      📈 단기 경향성 보기
+                    </a>
+                  </div>
+                  <!-- 첫 줄: 6개 요소 (2+2+2+2+2+2 = 12) -->
+                  <div class="col-md-2">
+                    <label class="mb-2 fw-bold">Start Date</label>
+                    <input type="date" id="startDate" class="form-control" value="{{ start_date }}">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="mb-2 fw-bold">End Date</label>
+                    <input type="date" id="endDate" class="form-control"  value="{{end_date }}">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="mb-2 fw-bold">Quick Date Range</label>
+                    <select id="quickRange" class="form-select">
+                      <option value="{{ date_diff }}">Select Range</option>
+                      <option value="7">Last 1 Week</option>
+                      <option value="14">Last 2 Weeks</option>
+                      <option value="30">Last 1 Month</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="mb-2 fw-bold">Command</label>
+                    <select id="command" class="form-select">
+                      <option value="PICK">PICK</option>
+                      <option value="GOTO">GOTO</option>
+                      <option value="PLACE">PLACE</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="mb-2 fw-bold">Stage</label>
+                    <input value = 3 type="number" id="stage" class="form-control">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="mb-2 fw-bold">Arm</label>
+                    <input value = 2 type="number" id="stage" class="form-control">
+                  </div>
+
+                  <!-- 두 번째 줄: 센서 선택 + 버튼 -->
+                  <div class="col-md-8">
+                    <label class="mb-2 fw-bold">Select Data to Display</label>
+                    <div id="sensorCheckboxes" class="d-flex flex-wrap gap-4">
+                      <label class="form-check-label"><input type="checkbox" value="maxPosErr1" checked class="form-check-input me-2">T1</label>
+                      <label class="form-check-label"><input type="checkbox" value="maxPosErr2" class="form-check-input me-3">Z</label>
+                      <label class="form-check-label"><input type="checkbox" value="maxPosErr3" class="form-check-input me-3">T2</label>
+                      <label class="form-check-label"><input type="checkbox" value="maxPosErr4" class="form-check-input me-3">A</label>
+                      <label class="form-check-label"><input type="checkbox" value="maxPosErr5" class="form-check-input me-3">B</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <canvas id="sensorChart" width="1000" height="500"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- [ link-button ] end -->
+        </div>
+        <!--[ Main Content ] end-->
+      </div>
+    </div>
+<!-- Required Js -->
+<!-- JS -->
+<script src="{{ url_for('static', filename='assets/js/plugins/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/simplebar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/fonts/custom-font.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/feather.min.js') }}"></script>
+<!-- Chart.js CDN -->
+<script src="{{ url_for('static', filename='assets/js/chart.js') }}"></script>
+<!-- 사용자 정의 스크립트 -->
+<script src="{{ url_for('static', filename='assets/js/long_term_chart.js') }}"></script>
+<script>change_box_container('false');</script>
+<script>layout_caption_change('true');</script>
+<script>layout_rtl_change('false');</script>
+<script>preset_change("preset-1");</script>
+
+    <!-- [Page Specific JS] start -->
+    <script src="{{ url_for('static', filename='assets/js/plugins/clipboard.min.js') }}"></script>
+    <script>
+      window.addEventListener('load', (event) => {
+        var i_copy = new ClipboardJS('.color-block');
+        i_copy.on('success', function (e) {
+          var targetElement = e.trigger;
+          let icon_badge = document.createElement('span');
+          icon_badge.setAttribute('class', 'ic-badge badge bg-success float-end');
+          icon_badge.innerHTML = 'copied';
+          targetElement.append(icon_badge);
+          setTimeout(function () {
+            targetElement.children[0].remove();
+          }, 3000);
+        });
+
+        i_copy.on('error', function (e) {
+          var targetElement = e.trigger;
+          let icon_badge = document.createElement('span');
+          icon_badge.setAttribute('class', 'ic-badge badge bg-danger float-end');
+          icon_badge.innerHTML = 'Error';
+          targetElement.append(icon_badge);
+          setTimeout(function () {
+            targetElement.children[0].remove();
+          }, 3000);
+        });
+      });
+    </script>
+    <!-- [Page Specific JS] end -->
+  </body>
+  <!-- [Body] end -->
+</html>
