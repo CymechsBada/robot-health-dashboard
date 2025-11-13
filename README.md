@@ -27,18 +27,19 @@
 #### 1) 프로젝트 폴더 구성하기
 ##### [프로젝트 파일 다운받기](https://github.com/CymechsBada/CyHealthMonitoring_System)
 '''
-health-monitoring/
-│
-├── app.py                   # Flask 서버 엔트리
-├── setup.sh                 # 자동 설치 스크립트 (DB+Python 환경)
-├── requirements.txt         # Python 패키지 목록
-├── seed.sql (선택)          # 시드 데이터 파일
-└── static/                  # 정적 파일(HTML, JS, CSS)
-    ├── index.html
-    └── assets/
-    
+## 📁 CyHealthMonitoring_System
+
+| 경로 | 설명 |
+|------|------|
+| `app.py` | Flask 서버 엔트리 파일 |
+| `setup.sh` | 자동 설치 스크립트 (DB + Python + 시드 적용) |
+| `requirements.txt` | Python 라이브러리 목록 |
+| `seed.sql` | (선택) 초기 시드 데이터 |
+| `static/index.html` | 메인 UI 페이지 |
+| `static/assets/` | CSS / JS / 이미지 등 정적파일 |
+
 #### 2) 🗄 데이터베이스 구성 (setup.sh 자동 수행)
-##### 터미널에서 아래 명령어 실행하기 
+##### - 터미널에서 아래 명령어 실행하기 
 
 ```bash
 cd health-monitoring 폴더 주소
@@ -59,7 +60,7 @@ WHERE table_schema = 'gwai_cymechs';
 ```
 
 #### 3) Python 설치 + 가상 환경 및 라이브러리 셋팅
-##### Python 가상환경 생성
+##### - Python 가상환경 생성
 ```bash
 python3 -m venv venv
 source venv/bin/activate       # Windows: venv\Scripts\activate
